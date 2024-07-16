@@ -1,0 +1,52 @@
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+import seaborn as sns
+
+url = 'https://web.stanford.edu/class/archive/cs/cs109/cs109.1166/stuff/titanic.csv'
+titanic = pd.read_csv(url)
+
+titanic.head()
+
+titanic.info()
+
+titanic.isnull().sum()
+
+titanic.describe()
+
+plt.figure(figsize=(8, 6))
+sns.countplot(data=titanic, x='Survived')
+plt.title('Survival Count')
+plt.show()
+
+survival_rate = titanic['Survived'].mean()
+print(f'Survival Rate: {survival_rate:.2%}')
+
+plt.figure(figsize=(10, 6))
+sns.histplot(data=titanic, x='Age', bins=30, kde=True)
+plt.title('Age Distribution')
+plt.show()
+
+plt.figure(figsize=(10, 6))
+sns.kdeplot(data=titanic[titanic['Survived'] == 1], x='Age', label='Survived', shade=True)
+sns.kdeplot(data=titanic[titanic['Survived'] == 0], x='Age', label='Not Survived', shade=True)
+plt.title('Survival Rate by Age')
+plt.legend()
+plt.show()
+
+
+plt.figure(figsize=(8, 6))
+sns.countplot(data=titanic, x='Survived', hue='Pclass')
+plt.title('Survival Count by Class')
+plt.show()
+
+survival_rate_class = titanic.groupby('Pclass')['Survived'].mean()
+print(survival_rate_class)
+
+plt.figure(figsize=(8, 6))
+sns.countplot(data=titanic, x='Survived', hue='Sex')
+plt.title('Survival Count by Gender')
+plt.show()
+
+survival_rate_gender = titanic.groupby('Sex')['Survived'].mean()
+print(survival_rate_gender)
